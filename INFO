@@ -1,0 +1,20 @@
+Key Project Facts
+
+Project name: Connectivity Services LSO (lsoapi)
+Repo name: lsoapi
+Project Creation Date: July 14, 2015 
+Project Category: Requirements 
+Lifecycle State: Incubation 
+Primary Contact: Kevin Luehrs, CableLabs (k.luehrs@cablelabs.com) 
+Project Lead: Kevin Luehrs
+Jira Project Name: Connectivity Services LSO 
+Mailing list tag: [lsoapi] 
+Jira Project Prefix: LSOAPI 
+IRC: #opnfv-lsoapi 
+
+Committers:
+
+k.luehrs@cablelabs.com
+m.makati@cablelabs.com
+b.otte@cablelabs.com
+ashlee@onosfw.com
