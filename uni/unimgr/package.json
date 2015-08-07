@@ -1,0 +1,10 @@
+{
+  "name": "unimgr-emulator",
+  "version": "0.0.1",
+  "description": "recieves and prints unimgr REST calls",
+  "author": "steve@sentosatech.com",
+  "dependencies": {
+      "express"    : "latest",
+      "body-parser": "*"
+  }
+}

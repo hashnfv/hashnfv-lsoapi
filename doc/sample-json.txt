@@ -1,0 +1,46 @@
+
+// cos
+Content-Type	application/json
+Accept			application/json
+{
+	"id" : "gold",
+    "commitedInfoRate" : 100,
+    "availbility" : 99.9,
+    "frameDelay" : 2.5,
+    "jitter" : 3.6,
+    "frameLoss" : 4.7 
+}
+
+// evc
+Content-Type	application/json
+Accept			application/json
+{
+  "broadcastFrameDelivery": "UNCONDITIONAL",
+  "ceVLanIdPreservation": true,
+  "ceVlanCosPreservation": true,
+  "cosId": "gold",
+  "evcMaxSvcFrameSize": 1600,
+  "evcType": "POINT_TO_POINT",
+  "id": "11:00:11:11:11:11|11:00:22:22:22:22",
+  "maxUnis": 2,
+  "multicastFrameDelivery": "UNCONDITIONAL",
+  "oneWayAvailability": 0.99,
+  "oneWayFrameDelay": 17.43,
+  "oneWayFrameLossRatio": 0.01,
+  "uniIdList": [
+    "UNI-1",
+    "UNI-2"
+  ],
+  "uniIpList": [
+    "192.168.1.1",
+    "192.168.1.2"
+  ],
+  "uniMacList": [
+    "11:00:11:11:11:11",
+    "11:00:22:22:22:22"
+  ],
+  "unicastFrameDelivery": "UNCONDITIONAL"
+}
+
+// for the simple ping test gets
+Accept			text/plain
