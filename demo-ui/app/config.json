@@ -1,0 +1,32 @@
+{
+	"cosMgr"    : { "ip": "localhost", "port": "9090" },
+	"evcMgr"    : { "ip": "localhost", "port": "9090" },
+	"eplMgr"    : { "ip": "localhost", "port": "9090" },
+	"evcMgr"    : { "ip": "localhost", "port": "9090" },	
+	"uniMgr"    : { "ip": "localhost", "port": "8181" },
+	"evcPathMgr": { "ip": "localhost", "port": "8181" },
+
+
+	"uniList" : [
+		{
+	  		"ip"      : "10.1.1.11",
+	  		"mac"     : "00:11:11:11:11:11",
+	  		"address" : "Denver"
+	  	},
+		{
+	  		"ip"      : "10.1.1.12",
+	  		"mac"     : "00:22:22:22:22:22",
+	  		"address" : "Paris"
+	  	},
+		{
+	  		"ip"      : "10.1.1.13",
+	  		"mac"     : "00:33:33:33:33:33",
+	  		"address" : "Tokyo"
+	  	},
+		{
+	  		"ip"      : "10.1.1.14",
+	  		"mac"     : "00:44:44:44:44:44",
+	  		"address" : "Quebec"
+	  	}
+	]
+}

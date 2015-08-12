@@ -1,0 +1,171 @@
+<!-- 
+
+To Do
+	Change Bandwidth to drop down, with selected levels (10M, 100M, 1G, etc)
+ -->
+
+<div class="primary-lable ">Service Levels</div>
+<div class="cos-list">
+	<div class="list-item choosable" 
+		 ng-repeat="cos in cosList track by $index"
+
+		 ng-class="{'selected-item-idle'   : $index === selectedCosIdx && 
+		                                     !cosActionInProgress(), 
+		            'selected-item-update' : $index === selectedCosIdx && 
+		                                     cosUpdateInProgress(),
+		            'selected-item-delete' : $index === selectedCosIdx && 
+		                                     cosDelInProgress()         }"
+		 ng-click="onCosClick($index)">
+		{{ cos.id }}
+	</div>
+</div>
+
+<div class = "action-icon-container">
+
+	<span class="action-icon glyphicon glyphicon-plus"
+		  ng-click="onAddCos()"
+		  ng-class="{'action' : cosAddInProgress()}">
+		  </span>
+
+	<span class="action-icon glyphicon glyphicon-pencil"
+		  ng-click="onUpdateCos()"
+		  ng-class="{'action' : cosUpdateInProgress()}">
+		  </span>
+
+	<span class="action-icon glyphicon glyphicon-minus"
+		  ng-click="onDelCos()"
+		  ng-class="{'action' : cosDelInProgress()}">
+		  </span>
+</div>
+
+<div class="cos-info-contaier">
+	<form role="form" ng-submit="onCosInputSubmit()">
+
+		<!-- Name -->
+
+		<div class="data-row">
+			<div class="label-col">Name:</div>
+			<div class="data-col" ng-show="showCosName()">
+				<span class="data-item">
+ 					{{ cosList[selectedCosIdx].id }}
+				</span>
+			</div>						
+			<div class="data-col" ng-show="showCosNameInput()">
+				<input class="data-input" name="id"
+					   type="text" ng-required="showCosInputs()"
+					   ng-model="cosToEdit.id">
+			</div>						
+		</div>
+
+		<div class="data-row">
+			<div class="label-col">Bandwidth:</div>
+			<div class="data-col" ng-show="showCosValues()">
+
+				<span class="data-item">
+					{{ bwText(cosList[selectedCosIdx]) }}	
+				</span>
+			</div>	
+			<div class="data-col" ng-show="showCosInputs()">
+				<select class="cos-dd-input" 						
+				        name="bandwidth"
+				        ng-required="showCosInputs()"
+					    ng-model="cosToEdit.bwSelected"
+					    ng-options="bw.name for bw in availableBWs"
+						>
+					</option>
+				</select>
+			</div>						
+		</div>					
+
+		<!-- Availability -->
+
+		<div class="data-row">
+			<div class="label-col">Availability:</div>
+			<div class="data-col" ng-show="showCosValues()">
+				<span class="data-item">
+					{{ cosList[selectedCosIdx].availbility }}
+				</span>
+				<span class="data-unit">%</span>
+			</div>						
+			<div class="data-col" ng-show="showCosInputs()">
+				<input class="data-input" name="availbility" 
+				       type="number" step="any" ng-required="showCosInputs()"
+					   min="1" max="100"
+					   ng-model="cosToEdit.availbility">
+				<span class="data-unit">%</span>
+			</div>
+		</div>
+
+		<!-- Frame Delay -->
+
+		<div class="data-row">
+			<div class="label-col">Frame Delay:</div>
+			<div class="data-col" ng-show="showCosValues()">
+				<span class="data-item">
+					{{ cosList[selectedCosIdx].frameDelay }}
+				</span>
+				<span class="data-unit">ms</span>
+			</div>						
+			<div class="data-col" ng-show="showCosInputs()">
+				<input class="data-input" name="frameDelay"
+				       type="number" step="any" ng-required="showCosInputs()"
+					   min="0"
+					   ng-model="cosToEdit.frameDelay">
+				<span class="data-unit">ms</span>
+			</div>
+		</div>
+
+		<!-- Jitter -->
+
+		<div class="data-row">
+			<div class="label-col">Jitter:</div>
+			<div class="data-col" ng-show="showCosValues()">
+				<span class="data-item">
+					{{ cosList[selectedCosIdx].jitter }}
+				</span>
+				<span class="data-unit">ms</span>
+			</div>						
+			<div class="data-col" ng-show="showCosInputs()">
+				<input class="data-input" name="jitter"
+					   type="number" step="any" ng-required="showCosInputs()"
+					   min="0" 
+					   ng-model="cosToEdit.jitter">
+				<span class="data-unit">ms</span>
+			</div>
+		</div>
+
+		<!-- Frame Loss -->
+
+		<div class="data-row">
+			<div class="label-col">Frame Loss:</div>
+			<div class="data-col" ng-show="showCosValues()">
+				<span class="data-item">
+					{{ cosList[selectedCosIdx].frameLoss }}
+				</span>
+				<span class="data-unit">%</span>
+			</div>						
+			<div class="data-col" name="frameLoss"ng-show="showCosInputs()">
+				<input class="data-input" name="frameLoss"
+					    type="number" step="any" ng-required="showCosInputs()"
+					    min="0" max="100"
+					   ng-model="cosToEdit.frameLoss">
+				<span class="data-unit">%</span>
+			</div>
+		</div>
+
+
+		<div class="warning-container">
+			<div class="warning" ng-show="cosNameConflict()">Please Enter Unique Name</div>
+		</div>
+		<div class="button-container">
+			<button type="submit"
+					class="btn btn-sm my-btn-addon"
+					<div ng-class="{'btn-success' : cosAddInProgress(), 
+					                'btn-warning' : cosUpdateInProgress(),
+					                'btn-danger'  : cosDelInProgress()}"
+					ng-disabled="!activateCosActionButton()"
+					ng-show="showCosActionButton()")>
+					{{ cosActionButtonText }}</button>
+		</div>
+	</form>
+</div>

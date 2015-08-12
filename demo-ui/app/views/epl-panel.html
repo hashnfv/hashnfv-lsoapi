@@ -1,0 +1,187 @@
+<!-- 
+
+To Do
+	construct default name based on UNIs and COS
+	display EVC params when clicked
+	changed currently hardcoded widths (150) of input fields/dd's to be set by a class
+	update config file based on watch (already have hit issue), rather than wait
+	update available cos list when new cos added (low priority)
+	
+ -->
+
+<!--  List of existing EPLs -->
+
+<div class="primary-lable ">Ethernet Private Line Services</div>
+<div class="epl-list">
+	<div class="list-item choosable" 
+		 ng-repeat="epl in eplList track by $index"
+
+		 ng-class="{'selected-item-idle'   : $index === selectedEplIdx && 
+		                                     !eplActionInProgress(), 
+		            'selected-item-update' : $index === selectedEplIdx && 
+		                                     eplUpdateInProgress(),
+		            'selected-item-delete' : $index === selectedEplIdx && 
+		                                     eplDelInProgress()         }"
+		 ng-click="onEplClick($index)">
+		{{ epl.id }}
+	</div>
+</div>
+
+
+<!--  Action Icons (add/mod/del) -->
+
+<div class = "action-icon-container">
+
+	<span class="action-icon glyphicon glyphicon-plus"
+		  ng-click="onAddEpl()"
+		  ng-class="{'action' : eplAddInProgress()}">
+		  </span>
+
+	<span class="action-icon glyphicon glyphicon-pencil"
+		  ng-click="onUpdateEpl()"
+		  ng-class="{'action' : eplUpdateInProgress()}">
+		  </span>
+
+	<span class="action-icon glyphicon glyphicon-minus"
+		  ng-click="onDelEpl()"
+		  ng-class="{'action' : eplDelInProgress()}">
+		  </span>
+</div>
+
+<!--  Data for EPL selected / being acted on -->
+
+<div class="epl-info-contaier">
+	<form role="form" ng-submit="onEplInputSubmit()">
+
+		<!-- Name -->
+
+		<div class="data-row">
+			<div class="label-col">Name:</div>
+			<div class="data-col" ng-show="showEplName()">
+				<span class="data-item">
+ 					{{ eplList[selectedEplIdx].id }}
+				</span>
+			</div>						
+
+			<div class="data-col" ng-show="showEplNameInput()">
+				<input class="data-input" name="id"
+					   style="width:150" 
+					   type="text" ng-required="showEplInputs()"
+					   ng-model="eplToEdit.id">
+			</div>						
+		</div>
+
+		<!-- Class of servce -->
+
+		<div class="data-row">
+			<div class="label-col">Service level</div>
+			<div class="data-col" ng-show="showEplValues()">
+				<span class="data-item">
+					{{ eplList[selectedEplIdx].cos }}</span>
+			</div>						
+			<div class="data-col" ng-show="showEplInputs()">
+				<select class="dd-input" 
+						style="width:150" 
+				        name="cos Id"
+				        ng-required="showEplInputs()"
+					    ng-model="eplToEdit.cos"
+						>
+					<option ng-repeat="cos in availableCosIds"
+					        value="{{ cos }}"
+					        ng-selected="{{cos == eplToEdit.cos}}"
+					        >
+						{{ cos }}
+					</option>
+				</select>
+			</div>
+		</div>
+
+
+		<!-- UNI 1 -->
+
+ 		<div class="data-row">
+			<div class="label-col">UNI 1</div>
+			<div class="data-col" ng-show="showEplValues()">
+				<span class="data-item">
+					{{ eplList[selectedEplIdx].uniHostIpList[0] }}&nbsp
+					( {{ eplList[selectedEplIdx].custAddressList[0] }} )
+				</span>
+			</div>					
+
+			<div class="data-col" ng-show="showEplInputs()">
+				<select class="dd-input" 
+						style="width:150" 
+				        name="uni 1"
+				        ng-required="showEplInputs()"
+					    ng-model="eplToEdit.uni1Selected"
+					    ng-options="uni.ip + '    ( ' + uni.address + ' )' for uni in availableUnis"
+						>
+					</option>
+				</select>
+			</div>						
+		</div>
+
+
+		<!-- UNI 2 -->
+
+ 		<div class="data-row">
+			<div class="label-col">UNI 2</div>
+			<div class="data-col" ng-show="showEplValues()">
+				<span class="data-item">
+					{{ eplList[selectedEplIdx].uniHostIpList[1] }}&nbsp
+					( {{ eplList[selectedEplIdx].custAddressList[1] }} )
+				</span>
+			</div>					
+
+			<div class="data-col" ng-show="showEplInputs()">
+				<select class="dd-input" 
+						style="width:150" 
+				        name="uni 1"
+				        ng-required="showEplInputs()"
+					    ng-model="eplToEdit.uni2Selected"
+					    ng-options="uni.ip + '    ( ' + uni.address + ' )' for uni in availableUnis"
+						>
+					</option>
+				</select>
+			</div>						
+		</div>
+
+
+		<!-- Evc -->
+
+		<div class="data-row" >
+			<div class="label-col" ng-hide="eplAddInProgress()">Assoc Evc:</div>
+			<div class="data-col">
+				<span class="data-item" ng-hide="eplAddInProgress()">
+ 					{{ eplList[selectedEplIdx].evcId }}
+				</span>
+			</div>						
+		</div>
+
+		<!-- Action Buttons -->
+
+		<div class="warning-container">
+			&nbsp<span class="warning" ng-show="eplNameConflict()">[Please Enter Unique Name]&nbsp&nbsp&nbsp</span>
+			<span class="warning" ng-show="uniConflict()">[UNI-1 and UNI-2 must be different]&nbsp&nbsp&nbsp</span>
+			<span class="warning" ng-show="cosConflict()">[Must create SL before creating EPL]&nbsp&nbsp&nbsp</span>
+		</div>
+		<div class="button-container">
+			<button type="submit"
+					class="btn btn-sm my-btn-addon"
+					<div ng-class="{'btn-success' : eplAddInProgress(), 
+					                'btn-warning' : eplUpdateInProgress(),
+					                'btn-danger'  : eplDelInProgress()}"
+					ng-disabled="!activateEplActionButton()"
+					ng-show="showEplActionButton()")>
+					{{ eplActionButtonText }}</button>
+		</div>
+
+		<!-- Debug -->
+
+<!-- 		
+        <div>			
+		</div>
+ -->
+
+	</form>
+</div>

@@ -1,0 +1,370 @@
+<!-- 
+
+To Do
+    Use cases to handle properly RE EVC/UNI displaying info
+        - EPL exist at start up
+        - no EPL at start up
+        - delete an EPL
+        - delete last EPL
+ -->
+
+<div class="primary-mef-lable">MEF EPL Data</div>
+<div class="mef-info-container">
+
+
+    <!-- UNI 1 -->
+
+    <div class="uni1-container">
+        <div class="mef-panel-hdr">
+            <div class="secondary-mef-label">UNI-1 MEF Attributes</div>
+            <div class="secondary-mef-label"
+                 style="font-size: xx-small; font-weight: normal; color: #b3b3b3;">
+                (Source = ODL UNI Mgr DB)
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">Uni ID:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[0].uni[0]["id"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">IP Address:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[0].uni[0]["ip-address"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">MAC Address:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[0].uni[0]["mac-address"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">Speed:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ uniToSpeedString(currentEvcUnis[0]) }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">Mac Layer:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[0].uni[0]["mac-layer"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">Phys Medium:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[0].uni[0]["physical-medium"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">MTU Size:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[0].uni[0]["mtu-size"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">Mode:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[0].uni[0]["mode"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">Type:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[0].uni[0]["type"] }}
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- EVC -->
+
+    <div class="evc-container">
+
+        <div class="mef-panel-hdr">
+            <div class="secondary-mef-label">EVC MEF Attributes</div>
+            <div class="secondary-mef-label" 
+                 style="font-size: xx-small; font-weight: normal; color: #b3b3b3;">
+                (Source = EVC Mgr DB)</div>
+        </div>
+        <div class="data-row">
+            <div class="evc-label-col">Evc ID:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+				<span class="data-item">
+					{{ currentEplEvc.id }}
+				</span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">CoS ID:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+				<span class="data-item">
+					{{ currentEplEvc.cosId }}
+				</span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">Uni-1/2 IDs:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+
+				<span class="data-item">
+					{{ "[" + currentEplEvc.uniIdList[0] + "] | [" + currentEplEvc.uniIdList[1] + "]"}}
+				</span>
+
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">Uni-1/2 IPs:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+				<span class="data-item">
+					{{ currentEplEvc.uniIpList[0] }}
+				</span>
+            </div>
+        </div>
+        <div class="data-row">
+            <div class="evc-label-col"></div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEplEvc.uniIpList[1] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">Uni-1/2 MACs:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEplEvc.uniMacList[0]  }}
+                </span>
+            </div>
+        </div>
+        <div class="data-row">
+            <div class="evc-label-col"></div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEplEvc.uniMacList[1] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">1-Way Availability:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+				<span class="data-item">
+					{{ currentEplEvc.oneWayAvailability }}
+				</span>
+                <span class="data-unit">%</span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">1-Way Frame Delay:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+				<span class="data-item">
+					{{ currentEplEvc.oneWayFrameDelay }}
+				</span>
+                <span class="data-unit">ms</span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">1-Way Frame Loss Ratio:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+				<span class="data-item">
+					{{ currentEplEvc.oneWayFrameLossRatio }}
+				</span>
+                <span class="data-unit">%</span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">EVC Type:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEplEvc.evcType }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">Unicast Frame Delivery:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+				<span class="data-item">
+					{{ currentEplEvc.unicastFrameDelivery }}
+				</span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">Broadcast Frame Delivery:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+				<span class="data-item">
+					{{ currentEplEvc.broadcastFrameDelivery }}
+				</span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">Multicast Frame Delivery:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+				<span class="data-item">
+					{{ currentEplEvc.multicastFrameDelivery }}
+				</span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">CE VLAN ID Preservation:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+				<span class="data-item">
+					{{ currentEplEvc.ceVLanIdPreservation }}
+				</span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">CE VLAN CoS Preservation:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+				<span class="data-item">
+					{{ currentEplEvc.ceVlanCosPreservation }}
+				</span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="evc-label-col">Max Service Frame Size:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+				<span class="data-item">
+					{{ currentEplEvc.evcMaxSvcFrameSize }}
+				</span>
+                <span class="data-unit">bytes</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- UNI 2 -->
+
+    <div class="uni2-container">
+        <div class="mef-panel-hdr">
+            <div class="secondary-mef-label">UNI-2 MEF Attributes</div>
+            <div class="secondary-mef-label"
+                 style="font-size: xx-small; font-weight: normal; color: #b3b3b3;">
+                (Source = ODL UNI Mgr DB)
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">Uni ID:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[1].uni[0]["id"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">IP Address:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[1].uni[0]["ip-address"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">MAC Address:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[1].uni[0]["mac-address"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">Speed:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ uniToSpeedString(currentEvcUnis[1]) }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">Mac Layer:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[1].uni[0]["mac-layer"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">Phys Medium:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[1].uni[0]["physical-medium"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">MTU Size:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[0].uni[0]["mtu-size"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">Mode:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[1].uni[0]["mode"] }}
+                </span>
+            </div>
+        </div>
+
+        <div class="data-row">
+            <div class="uni-label-col">Type:</div>
+            <div class="data-col" ng-show="showEvcValues()">
+                <span class="data-item">
+                    {{ currentEvcUnis[1].uni[0]["type"] }}
+                </span>
+            </div>
+        </div>
+
+    </div>
+</div>

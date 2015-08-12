@@ -1,0 +1,71 @@
+<!-- 
+
+TODO
+	- Use watchers to trigger changes aftger config file reads as opposed
+	  to the current "sleep for a bit" approach
+
+ -->
+
+<html ng-app="vcpe">
+<head ng-controller="MainController">
+
+	<script src="../../bower_components/angular/angular.min.js"></script>
+
+	<link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+
+	<link rel="stylesheet" href="css/vcpe.css" />
+	<script src="../controllers/MainController.js"></script>
+	<script src="../controllers/CosController.js"></script>
+	<script src="../controllers/EplController.js"></script>
+	<script src="../controllers/MefController.js"></script>
+	<script src="../services/cosServices.js"></script>
+	<script src="../services/eplServices.js"></script>
+	<script src="../services/mefServices.js"></script>
+	<script src="../services/model.js"></script>
+	<script src="../services/dbg.js"></script>
+
+</head>
+
+<body>
+<div class="frame">
+<div class="left"></div>
+
+<div class="content">
+
+	<div class="header-container">
+		<div class="hdr">
+			<h2>Virtual Business CPE Demo</h2>
+		</div>
+	</div>
+
+	<div class="action-container">
+
+		<div class="cos-container" 
+			  ng-controller="CosController"
+			  ng-include="'cos-panel.html'">
+		</div>
+
+		<div class="epl-container" 
+			  ng-controller="EplController"
+			  ng-include="'epl-panel.html'">
+		</div>
+
+	</div>
+
+	<div class="monitor-container">
+
+		<div class="mef-container" 
+			 ng-controller="MefController"
+			 ng-include="'mef-panel.html'">
+		</div>
+
+
+	</div>
+
+</div>
+
+<div class="right"></div>
+</div>
+</body>
+</html>
