@@ -106,7 +106,7 @@ public class EvcService {
 		// Give ODL a chance to finish creating the UNIs before moving on
         // NOTE: Should be fixed on ODL side eventually via synchronized message handling
 		try{
-		Thread.sleep(1000);
+		Thread.sleep(3000);
 		} catch(InterruptedException ex)
 			{Thread.currentThread().interrupt();
 		}
