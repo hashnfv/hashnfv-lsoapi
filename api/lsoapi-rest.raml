@@ -1,0 +1,586 @@
+#%RAML 0.8
+
+title: lsoapi
+baseUri: http://lsoapi-server
+version: v1
+mediaType:  application/json
+protocols: [ HTTP ]
+
+traits:
+
+#===============================================================                        
+# EPL JSON
+#===============================================================                        
+
+  - eplBody:
+      body:
+        application/json:
+          schema: |
+              {
+                "id": {
+                    "required": true,
+                    "type": "string"
+                },
+                "numCustLocations": {
+                    "required": true,
+                    "type": "long"
+                },
+                "custAddressList": {
+                    "required": true,
+                    "type": "array",
+                    "items": { "type" : "string" },
+                    "uniqueItems": true
+                },
+                "uniHostMacList": {
+                    "required": true,
+                    "type": "array",
+                    "items": { "type" : "string" },
+                    "uniqueItems": true
+                },
+                "uniHostIpList": {
+                    "required": true,
+                    "type": "array",
+                    "items": { "type" : "string" },
+                    "uniqueItems": true
+                },
+                "cos": {
+                    "required": true,
+                    "type": "long"
+                },
+                "evcId": {
+                    "required": true,
+                    "type": "long"
+                }
+              }        
+          example: |
+              {
+                "id": "epl-1",
+                "numCustLocations": 2,
+                "custAddressList": [
+                  "1111 MEF Dr, Honolulu HI, USA",
+                  "2222 UNI Dr, Boston MA, MAS"
+                ],
+                "uniHostMacList": [
+                  "00:B0:95:9d:68:16",
+                  "00:A0:C9:14:C8:29"
+                ]
+                "uniHostIpList": [
+                  "192.168.1.10",
+                  "192.168.1.11"s
+                ],
+                "cos": "gold",
+                "evcId": "evc-1",
+              }
+
+  - eplResp:
+      responses:
+        200:
+          description: <<jsonRep>>
+          body:
+            application/json:
+              schema: |
+                  {
+                    "id": {
+                        "required": true,
+                        "type": "string"
+                    },
+                    "numCustLocations": {
+                        "required": true,
+                        "type": "long"
+                    },
+                    "custAddressList": {
+                        "required": true,
+                        "type": "array",
+                        "items": { "type" : "string" },
+                        "uniqueItems": true
+                    },
+                    "uniHostMacList": {
+                        "required": true,
+                        "type": "array",
+                        "items": { "type" : "string" },
+                        "uniqueItems": true
+                    },
+                    "uniHostIpList": {
+                        "required": true,
+                        "type": "array",
+                        "items": { "type" : "string" },
+                        "uniqueItems": true
+                    },
+                    "cos": {
+                        "required": true,
+                        "type": "long"
+                    },
+                    "evcId": {
+                        "required": true,
+                        "type": "long"
+                    }
+                  }        
+              example: |
+                  {
+                    "id": "epl-1",
+                    "numCustLocations": 2,
+                    "custAddressList": [
+                      "1111 MEF Dr, Honolulu HI, USA",
+                      "2222 UNI Dr, Boston MA, MAS"
+                    ],
+                    "uniHostMacList": [
+                      "00:B0:95:9d:68:16",
+                      "00:A0:C9:14:C8:29"
+                    ]
+                    "uniHostIpList": [
+                      "192.168.1.10",
+                      "192.168.1.11"s
+                    ],
+                    "cos": "gold",
+                    "evcId": "evc-1",
+                  }
+
+#===============================================================                        
+# EPL JSON
+#===============================================================                        
+
+  - evcBody:
+      body:
+        application/json:
+          schema: |
+              {
+                "id": {
+                    "required": true,
+                    "type": "string"
+                },
+                "evcType": {
+                    "required": true,
+                    "type": "string",
+                    "enum" : [ 
+                      "POINT_TO_POINT", 
+                      "MULTIPOINT_TO_MULTIPOINT", 
+                      "ROOTED_MULTIPOINT" 
+                      ]
+                },
+                "maxUnis": {
+                    "required": true,
+                    "type": "long"
+                },
+                "unicastFrameDelivery": {
+                    "required": true,
+                    "type": "string",
+                    "enum" : [ 
+                      "DISCARD", 
+                      "UNCONDITIONAL", 
+                      "CONDITIONAL" 
+                      ]
+                },
+                "multicastFrameDelivery": {
+                    "required": true,
+                    "type": "string",
+                    "enum" : [ 
+                      "DISCARD", 
+                      "UNCONDITIONAL", 
+                      "CONDITIONAL" 
+                      ]
+                },
+                "broadcastFrameDelivery": {
+                    "required": true,
+                    "type": "string",
+                    "enum" : [ 
+                      "DISCARD", 
+                      "UNCONDITIONAL", 
+                      "CONDITIONAL" 
+                      ]
+                },
+                "uniIdList": {
+                    "required": true,
+                    "type": "array",
+                    "items": { "type" : "string" },
+                    "uniqueItems": true
+                },
+                "uniIpList": {
+                    "required": true,
+                    "type": "array",
+                    "items": { "type" : "string" },
+                    "uniqueItems": true
+                },
+                "uniMacList": {
+                    "required": true,
+                    "type": "array",
+                    "items": { "type" : "string" },
+                    "uniqueItems": true
+                },
+                "ceVLanIdPreservation": {
+                    "required": true,
+                    "type": "boolean"
+                },
+                "ceVlanCosPreservation": {
+                    "required": true,
+                    "type": "boolean"
+                },
+                "cosId": {
+                    "required": true,
+                    "type": "string"
+                },
+                "evcMaxSvcFrameSize": {
+                    "required": true,
+                    "type": "long"
+                },
+                "oneWayAvailability": {
+                    "required": true,
+                    "type": "double"
+                },
+                "oneWayFrameDelay": {
+                    "required": true,
+                    "type": "double"
+                },
+                "oneWayFrameLossRatio": {
+                    "required": true,
+                    "type": "double"
+                }
+              }
+          example: |
+              {
+                "id": "evc-1",
+                "evcType": "POINT_TO_POINT",
+                "maxUnis": 2,
+                "unicastFrameDelivery": "UNCONDITIONAL"
+                "multicastFrameDelivery": "UNCONDITIONAL",
+                "broadcastFrameDelivery": "UNCONDITIONAL",
+                "uniIdList": [
+                  "UNI-1",
+                  "UNI-2"
+                ],
+                "uniIpList": [
+                  "192.168.1.1",
+                  "192.168.1.2"
+                ],
+                "uniMacList": [
+                  "11:00:11:11:11:11",
+                  "11:00:22:22:22:22"
+                ],
+                "ceVLanIdPreservation": true,
+                "ceVlanCosPreservation": true,
+                "cosId": "gold",
+                "evcMaxSvcFrameSize": 1600,
+                "oneWayAvailability": .99,
+                "oneWayFrameDelay": .32,
+                "oneWayFrameLossRatio": .01
+              }
+
+  - evcResp:
+      responses:
+        200:
+          description: <<jsonRep>>
+          body:
+            application/json:
+              schema: |
+                  {
+                    "id": {
+                        "required": true,
+                        "type": "string"
+                    },
+                    "evcType": {
+                        "required": true,
+                        "type": "string",
+                        "enum" : [ 
+                          "POINT_TO_POINT", 
+                          "MULTIPOINT_TO_MULTIPOINT", 
+                          "ROOTED_MULTIPOINT" 
+                          ]
+                    },
+                    "maxUnis": {
+                        "required": true,
+                        "type": "long"
+                    },
+                    "unicastFrameDelivery": {
+                        "required": true,
+                        "type": "string",
+                        "enum" : [ 
+                          "DISCARD", 
+                          "UNCONDITIONAL", 
+                          "CONDITIONAL" 
+                          ]
+                    },
+                    "multicastFrameDelivery": {
+                        "required": true,
+                        "type": "string",
+                        "enum" : [ 
+                          "DISCARD", 
+                          "UNCONDITIONAL", 
+                          "CONDITIONAL" 
+                          ]
+                    },
+                    "broadcastFrameDelivery": {
+                        "required": true,
+                        "type": "string",
+                        "enum" : [ 
+                          "DISCARD", 
+                          "UNCONDITIONAL", 
+                          "CONDITIONAL" 
+                          ]
+                    },
+                    "uniIdList": {
+                        "required": true,
+                        "type": "array",
+                        "items": { "type" : "string" },
+                        "uniqueItems": true
+                    },
+                    "uniIpList": {
+                        "required": true,
+                        "type": "array",
+                        "items": { "type" : "string" },
+                        "uniqueItems": true
+                    },
+                    "uniMacList": {
+                        "required": true,
+                        "type": "array",
+                        "items": { "type" : "string" },
+                        "uniqueItems": true
+                    },
+                    "ceVLanIdPreservation": {
+                        "required": true,
+                        "type": "boolean"
+                    },
+                    "ceVlanCosPreservation": {
+                        "required": true,
+                        "type": "boolean"
+                    },
+                    "cosId": {
+                        "required": true,
+                        "type": "string"
+                    },
+                    "evcMaxSvcFrameSize": {
+                        "required": true,
+                        "type": "long"
+                    },
+                    "oneWayAvailability": {
+                        "required": true,
+                        "type": "double"
+                    },
+                    "oneWayFrameDelay": {
+                        "required": true,
+                        "type": "double"
+                    },
+                    "oneWayFrameLossRatio": {
+                        "required": true,
+                        "type": "double"
+                    }
+                  }
+              example: |
+                  {
+                    "id": "evc-1",
+                    "evcType": "POINT_TO_POINT",
+                    "maxUnis": 2,
+                    "unicastFrameDelivery": "UNCONDITIONAL"
+                    "multicastFrameDelivery": "UNCONDITIONAL",
+                    "broadcastFrameDelivery": "UNCONDITIONAL",
+                    "uniIdList": [
+                      "UNI-1",
+                      "UNI-2"
+                    ],
+                    "uniIpList": [
+                      "192.168.1.1",
+                      "192.168.1.2"
+                    ],
+                    "uniMacList": [
+                      "11:00:11:11:11:11",
+                      "11:00:22:22:22:22"
+                    ],
+                    "ceVLanIdPreservation": true,
+                    "ceVlanCosPreservation": true,
+                    "cosId": "gold",
+                    "evcMaxSvcFrameSize": 1600,
+                    "oneWayAvailability": .99,
+                    "oneWayFrameDelay": .32,
+                    "oneWayFrameLossRatio": .01
+                  }
+
+#===============================================================                        
+# COS JSON
+#===============================================================                        
+
+  - cosBody:
+      body:
+        application/json:
+          schema: |
+              {
+                "id": {
+                    "required": true,
+                    "type": "string"
+                },
+                "commitedInfoRate": {
+                    "required": true,
+                    "type": "long"
+                },
+                "availbility": {
+                    "required": true,
+                    "type": "double"
+                },
+                "frameDelay": {
+                    "required": true,
+                    "type": "double"
+                },
+                "frameLoss": {
+                    "required": true,
+                    "type": "double"
+                },
+                "jitter": {
+                    "required": true,
+                    "type": "double"
+                }
+              }
+          example: |
+              {
+                "id": "gold",
+                "commitedInfoRate": 100,
+                "availbility": 0.99,
+                "frameDelay": 17.43,
+                "frameLoss": 0.01,
+                "jitter": 2.43
+              }
+
+  - cosResp:
+      responses:
+        200:
+          description: <<jsonRep>>
+          body:
+            application/json:
+              schema: |
+                  {
+                    "id": {
+                        "required": true,
+                        "type": "string"
+                    },
+                    "commitedInfoRate": {
+                        "required": true,
+                        "type": "long"
+                    },
+                    "availbility": {
+                        "required": true,
+                        "type": "double"
+                    },
+                    "frameDelay": {
+                        "required": true,
+                        "type": "double"
+                    },
+                    "frameLoss": {
+                        "required": true,
+                        "type": "double"
+                    },
+                    "jitter": {
+                        "required": true,
+                        "type": "double"
+                    }
+                  }
+              example: |
+                  {
+                    "id": "gold",
+                    "commitedInfoRate": 100,
+                    "availbility": 0.99,
+                    "frameDelay": 17.43,
+                    "frameLoss": 0.01,
+                    "jitter": 2.43
+                  }
+
+
+#===============================================================                        
+# REST Interface
+#===============================================================                        
+
+/svcmgr/webapi:
+
+  displayName: CRUD Instances of MEF Defined Services
+  description: CRUD Instances of MEF Defined Services
+
+  /svc/epl:
+    displayName: CRUD Instances MEF EPL Service
+    description: CRUD Instances MEF EPL Service, returns JSON representing created EPL instance
+
+    post:
+      description: Create an new EPL instance
+      is: [ eplBody, 
+            eplResp: { jsonRep: "JSON representing created EPL instance" }
+          ]
+
+    /{eplid}:
+
+      put:
+        description: Modify an existing EPL instance
+        is: [ eplBody, 
+              eplResp: { jsonRep: "JSON representing modified EPL instance" } ]
+
+      get:
+        description: Query an existing EPL instance
+        is: [ eplResp: { jsonRep: "JSON representing the queried EPL instance" } ]
+
+      delete:
+        description: delete an existing EPL instance
+        is: [  
+              eplResp: { jsonRep: "JSON representing deleted EPL instance" } ]
+
+    /list:
+      description: Get a list of all EPL instances
+
+      get:
+        description: Query a list of all existing EPL instances
+
+/evcmgr/webapi:
+  displayName: CRUD MEF EVC Instances
+  description: CRUD MEF EVC Instances
+
+  post:
+    description: Create an new EVC instance
+    is: [ evcBody, 
+          evcResp: { jsonRep: "JSON representing created EVC instance" } ]
+
+  /{evcid}:
+
+    put:
+      description: Modify an existing EVC instance
+      is: [ evcBody, 
+            evcResp: { jsonRep: "JSON representing modified EVC instance" } ]
+
+    get:
+      description: Query an existing EVC instance
+      is: [ evcResp: { jsonRep: "JSON representing the queried EPL instance" } ]
+
+    delete:
+      description: delete an existing EPL instance
+      is: [  
+            evcResp: { jsonRep: "JSON representing deleted EVC instance" } ]
+
+  /list:
+    description: Get a list of all EVC instances
+
+    get:
+      description: Query a list of all existing EVC instances
+
+
+/cosmgr/webapi:
+  displayName: CRUD MEF CoS Instances
+  description: CRUD MEF CoS Instances
+
+  post:
+    description: Create an new COS instance
+    is: [ cosBody, 
+          cosResp: { jsonRep: "JSON representing created COS instance" } ]
+
+  /{cosid}:
+
+    put:
+      description: Modify an existing COS instance
+      is: [ cosBody, 
+            cosResp: { jsonRep: "JSON representing modified COS instance" } ]
+
+    get:
+      description: Query an existing COS instance
+      is: [ cosResp: { jsonRep: "JSON representing the queried EPL instance" } ]
+
+    delete:
+      description: delete an existing EPL instance
+      is: [  
+            cosResp: { jsonRep: "JSON representing deleted COS instance" } ]
+
+  /list:
+    description: Get a list of all COS instances
+
+    get:
+      description: Query a list of all existing COS instances
+
