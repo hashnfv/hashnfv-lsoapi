@@ -7,8 +7,8 @@
 4. After these components are installed, create a Papyrus perspective by clicking on the “+” sigh in the perspective bar near the upper right (there will already be a Java Perspective created”)
     - Select “Papyrus” and hit “OK”
 5. Assuming that your eclipse working is ~/workspace:
-    - make a copy of the the folder “cl-mef-uml”, and (it contents) from the attached zip file  in ~/workspace (so that you end up with a ~/workspace/cl-mef_uml” directory”
+    - make a copy of the the folder “cl-mef-uml”, and (it contents) in ~/workspace (so that you end up with a ~/workspace/cl-mef_uml” directory”
 6. Activate the Papyrus perspective in eclipse, and goto the menu “File/New/Papyrus Project”
     - give the new project the name “cl-mef-uml” and the files that you placed into your workspace directory will automatically be imported into the new project.
-7. In the “Model” pane on the left, expand the “>Model” tree to see all of the the model components
-    - To view the detailed UML class digram click on “Diagram Data Model - Foundational Components” and the UML diagrams will become visible in the main pane.
+7. In the “Model Explorer” pane on the left, expand the “>Model” tree to see all of the the model components
+8. To view the UML class digram click on “Show Diagrams” icon withing In the “Model Explorer” pane on the left, and select the "MEF Classes" diagram.
