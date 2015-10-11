@@ -26,6 +26,11 @@ http://www.apache.org/licenses/LICENSE-2.0-->
         <module>unibase</module>
     </modules>
 
-    <dependencies></dependencies>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+    </dependencies>
 </project>

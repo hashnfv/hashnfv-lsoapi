@@ -38,10 +38,10 @@ public class Uni
 
     public enum PhysMedium { // just a sampling of 802.3 phys layers
         UNASSIGNED     ("UNASSIGNED"),
-        TEN_BASE_T     ("10BASE‑T"),
-        HUNDERED_BASE_T("100BASE‑T"),
-        GIG_BASE_T     ("1000BASE‑T"),
-        TEN_GIG_BASE_T ("10GBASE‑T");
+        TEN_BASE_T     ("10BASE-T"),
+        HUNDERED_BASE_T("100BASE-T"),
+        GIG_BASE_T     ("1000BASE-T"),
+        TEN_GIG_BASE_T ("10GBASE-T");
                             private final String s;
                             private PhysMedium(final String s) {this.s = s;}
                             @Override public String toString() { return s; }
@@ -72,32 +72,17 @@ public class Uni
                         @Override public String toString() { return s; }
         }
 
-    @XmlElement(name="id")
+
     private String id;
-
-    @XmlTransient // This does not get written to JSON body
     private SvcSpeed speed;
-
-    @XmlElement(name="ip-address")
     private String ipAddress;
-
-    @XmlElement(name="mac-address")
     private String macAddress;
-
-    @XmlElement(name="physical-medium")
     private PhysMedium physicalMedium;
-
-    @XmlElement(name="mac-layer")
     private MacLayer macLayer;
-
-    @XmlElement(name="mode")
     private SyncMode mode;
-
-    @XmlElement(name="type")
     private Type type;
-
-    @XmlElement(name="mtu-size")
     private long mtuSize;
+
 
     // no argument constructor required for JAX-RS
     public Uni() {

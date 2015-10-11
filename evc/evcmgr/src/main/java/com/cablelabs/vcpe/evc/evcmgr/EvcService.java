@@ -149,6 +149,7 @@ public class EvcService {
     @Produces(MediaType.APPLICATION_JSON)
   //--------------------------------------------------------
     public Response update(Evc evc)
+                           throws Exception
   //--------------------------------------------------------
     {
         Dbg.p("\nUPDATING [" + evc.getId()+"]");
@@ -160,12 +161,75 @@ public class EvcService {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        evc.setOneWayFrameDelay(cos.getFrameDelay());
-        evc.setOneWayFrameLossRatio(cos.getFrameLoss());
-        evc.setOneWayAvailability(cos.getAvailbility());
+        evc.setAllPerfProps( cos.getFrameDelay(),
+                             cos.getFrameLoss(),
+                             cos.getAvailbility());
 
+        Dbg.p("... EVC SVC: retrieved following cos info");
+        cos.dump(1);
+
+
+        // Retrieve the UNIs in ODL
+        Uni uni1 = null;
+        Uni uni2 = null;
+        UniClient uniClient = new UniClient();
+
+        List<String> uniIdList = evc.getUniIdList();
+
+        if ( uniIdList != null && uniIdList.size() > 0 )
+            uni1 = uniClient.get(uniIdList.get(0));
+        else return Response.status(Response.Status.BAD_REQUEST).build();
+
+        if ( uniIdList != null && uniIdList.size() > 1 )
+            uni2 = uniClient.get(uniIdList.get(1));
+        else return Response.status(Response.Status.BAD_REQUEST).build();
+
+
+        // Update the UNIs in ODL
+        Uni.SvcSpeed   svcSpeed   = Uni.cirToSvcSpeed( cos.getCommitedInfoRate());
+        Uni.PhysMedium physMedium = Uni.svcSpeedToPhysMedium(svcSpeed ); // just for demo
+                                                                         // for production need to pull from host
+        uni1.setAllProps(uni1.getId(),
+                svcSpeed,
+                evc.getUniIpList().get(0),
+                evc.getUniMacList().get(0),
+                physMedium,
+                Uni.MacLayer.IEEE_802_3,
+                Uni.SyncMode.ENABLED,
+                Uni.Type.UNITYPE,
+                1600);
+
+        uni2.setAllProps(uni2.getId(),
+                svcSpeed,
+                evc.getUniIpList().get(1),
+                evc.getUniMacList().get(1),
+                physMedium,
+                Uni.MacLayer.IEEE_802_3,
+                Uni.SyncMode.ENABLED,
+                Uni.Type.UNITYPE,
+                1600);
+
+        uniClient.update(uni1);
+        uniClient.update(uni2);
+
+
+	// Give ODL a chance to finish updating the UNIs before moving on
+	try {
+	    Thread.sleep(1000);
+	} catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+	}
+
+
+        // Update the evc path in ODL
+        EvcPath evcPath =  new EvcPath(evc.getId(), uni1, uni2, svcSpeed, svcSpeed, cos.getId());
+        EvcPathClient evcPathClient = new EvcPathClient();
+        evcPathClient.update(evcPath);
+
+        // Finish up with the evc
         EvcRespositoryInMem.INSTANCE.update(evc);
         EvcRespositoryInMem.INSTANCE.dump(0);
+
         return Response.ok().entity(evc).build();
     }
 
@@ -237,8 +301,12 @@ public class EvcService {
         UniClient uniClient = new UniClient();
         if ( uniIdList != null && uniIdList.size() > 0 )
             uniClient.delete(uniIdList.get(0));
+        else return Response.status(Response.Status.BAD_REQUEST).build();
+
         if ( uniIdList != null && uniIdList.size() > 1 )
             uniClient.delete(uniIdList.get(1));
+        else return Response.status(Response.Status.BAD_REQUEST).build();
+
 
         // OK, now we can delete the EVC itself
         EvcRespositoryInMem.INSTANCE.delete(evcId);

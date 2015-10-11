@@ -19,6 +19,9 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.json.*;
+import javax.json.stream.*;
+import java.io.StringReader;
 import java.util.List;
 import javax.xml.bind.DatatypeConverter;
 
@@ -31,6 +34,7 @@ public class UniClient {
     private String uniMgrServer   = "localhost";
     private String uniMgrPort     = "8181";
     private String uniMgrCfgRESTPath = "/restconf/config/cl-vcpe-mef:unis/";
+    private String uniMgrOpRESTPath = "/restconf/operational/cl-vcpe-mef:unis/";
 
     private Client client; // provided by Jersey
 
@@ -108,6 +112,7 @@ public class UniClient {
                 .request(MediaType.APPLICATION_JSON)
                 .header("Authorization", authorizationHeaderValue)
                 .delete();
+
         if (response.getStatus() != 200) // figure out how to use Status.OK
         {
             // in production you can be more specific based on reponse code, id, etc
@@ -120,29 +125,126 @@ public class UniClient {
    //
 
   //--------------------------------------------------------
-    public Uni get(String uniId)
+    public Uni get(String uniId) throws Exception
   //--------------------------------------------------------
   // get Uni of specified ID
     {
-        WebTarget target = client.target("http://localhost:9090/unimgr/webapi/");
-
-        Response response = target.path("uni/"+uniId).request(MediaType.APPLICATION_JSON).get(Response.class);
+        WebTarget target =client.target("http://"+uniMgrServer+":" + uniMgrPort + uniMgrOpRESTPath);
+        Response response = target.path("uni/" + uniId).request(MediaType.APPLICATION_JSON).get(Response.class);
         if (response.getStatus() != 200) // figure out how to use Status.OK
         {
             // in production you can be more specific based on reponse code, id, etc
             throw new RuntimeException(response.getStatus() + ": there was an error on the server.");
         }
 
-        //return response;
-        return response.readEntity(Uni.class);
+        Uni uni = new Uni();
+        uni.setId(uniId);
+        String uniJson = response.readEntity(String.class);
+        return JsonToUni(uni, uniJson);
     }
+
+
+  //--------------------------------------------------------
+    public Uni JsonToUni(Uni uni, String uniJson) {
+  //--------------------------------------------------------
+  // Parser utility encapsulation
+
+        try {
+            JsonParser parser = Json.createParser(new StringReader(uniJson));
+            JsonParser.Event event = null;
+
+            while (parser.hasNext()) {
+                event = parser.next();
+                switch(event) {
+                   case KEY_NAME:
+                      if (parser.getString().equals("speed")) {
+                          event = parser.next();
+                          if (parser.getString().equals("speed-10M")) {
+                              uni.setSpeed(Uni.SvcSpeed.TEN_MEG);
+                          } else
+                          if (parser.getString().equals("speed-100M")) {
+                              uni.setSpeed(Uni.SvcSpeed.HUNDRED_MEG);
+                          } else
+                          if (parser.getString().equals("speed-1G")) {
+                              uni.setSpeed(Uni.SvcSpeed.ONE_GIG);
+                          } else
+                          if (parser.getString().equals("speed-10G")) {
+                              uni.setSpeed(Uni.SvcSpeed.TEN_GIG);
+                          } else {
+                              uni.setSpeed(Uni.SvcSpeed.UNASSIGNED);
+                          }
+                      }
+                      if (parser.getString().equals("mac-layer")) {
+                          event = parser.next();
+                          uni.setMacLayer(Uni.MacLayer.UNASSIGNED);
+                          if (parser.getString().equals("IEEE 802.3-2005")) {
+                              uni.setMacLayer(Uni.MacLayer.IEEE_802_3);
+                          }
+                      }
+                      if (parser.getString().equals("physical-medium")) {
+                          event = parser.next();
+                          if (parser.getString().equals("10BASE-T")) {
+                              uni.setPhysicalMedium(Uni.PhysMedium.TEN_BASE_T);
+                          } else
+                          if (parser.getString().equals("100BASE-T")) {
+                              uni.setPhysicalMedium(Uni.PhysMedium.HUNDERED_BASE_T);
+                          } else
+                          if (parser.getString().equals("100BASE-T")) {
+                              uni.setPhysicalMedium(Uni.PhysMedium.GIG_BASE_T);
+                          } else
+                          if (parser.getString().equals("10GBASE-T")) {
+                              uni.setPhysicalMedium(Uni.PhysMedium.TEN_GIG_BASE_T);
+                          } else {
+                              uni.setPhysicalMedium(Uni.PhysMedium.UNASSIGNED);
+                          }
+                      }
+                      if (parser.getString().equals("mtu-size")) {
+                          uni.setMtuSize(parser.getLong());
+                          event = parser.next();
+                      }
+                      if (parser.getString().equals("type")) {
+                          event = parser.next();
+                          uni.setType(Uni.Type.UNASSIGNED);
+                          if (parser.getString().equals("IEEE 802.3-2005")) {
+                              uni.setType(Uni.Type.UNITYPE);
+                          }
+                      }
+                      if (parser.getString().equals("mac-address")) {
+                          uni.setMacAddress(parser.getString());
+                          event = parser.next();
+                      }
+                      if (event.toString().equals("ip-address")) {
+                          uni.setIpAddress(parser.getString());
+                          event = parser.next();
+                      }
+                      if (event.toString().equals("mode")) {
+                          event = parser.next();
+                          if (parser.getString().equals("syncEnabled")) {
+                              uni.setMode(Uni.SyncMode.ENABLED);
+                          } else
+                          if (parser.getString().equals("syncDisabled")) {
+                              uni.setMode(Uni.SyncMode.DISABLED);
+                          } else {
+                              uni.setMode(Uni.SyncMode.UNASSIGNED);
+                          }
+                      }
+                      break;
+                   default:
+                      break;
+                }
+            }
+        } catch(Exception e) {
+            Dbg.p("\n, JsonReader:" + e);
+        }
+        return uni;
+    }
+
 
   //--------------------------------------------------------
     public List<Uni> getAll()
   //--------------------------------------------------------
   // get a list of all Uni instances
     {
-
         WebTarget target = client.target("http://localhost:9090/unimgr/webapi/");
 
         // Can I do this with a Response, so that I can check for errors

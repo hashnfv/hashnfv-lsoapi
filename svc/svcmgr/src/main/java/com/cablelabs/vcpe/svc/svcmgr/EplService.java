@@ -65,7 +65,7 @@ public class EplService {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        // Transfer EPLs I{P list to EVC
+        // Transfer EPLs IP list to EVC
         List<String> uniIpList = new ArrayList<String>();
         if (epl.getUniHostIpList() != null && epl.getUniHostIpList().size() == 2) {
             uniIpList.add(epl.getUniHostIpList().get(0) );
@@ -111,7 +111,42 @@ public class EplService {
   //--------------------------------------------------------
     {
         Dbg.p("\nUPDATING [" + epl.getId()+"]");
+        if ( epl == null) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
+        // Retrieve EVC associated with EPL
+        EvcClient evcClient = new EvcClient();
+        Evc evc = evcClient.get(epl.getEvcId());
+
+        // Transfer EPLs mac list to EVC
+        List<String> uniMacList = new ArrayList<String>();
+        if (epl.getUniHostMacList() != null && epl.getUniHostMacList().size() == 2) {
+            uniMacList.add(epl.getUniHostMacList().get(0) );
+            uniMacList.add(epl.getUniHostMacList().get(1));
+        }
+        else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        // Transfer EPLs IP list to EVC
+        List<String> uniIpList = new ArrayList<String>();
+        if (epl.getUniHostIpList() != null && epl.getUniHostIpList().size() == 2) {
+            uniIpList.add(epl.getUniHostIpList().get(0) );
+            uniIpList.add(epl.getUniHostIpList().get(1));
+        }
+        else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        evc.setUniMacList(uniMacList);
+        evc.setUniIpList(uniIpList);
+        evc.setCosId(epl.getCos());
+
+        // send update request to EVC mgr
+        evc = evcClient.update(evc);
+
+        // update the EPL to our local repo
         EplRespositoryInMem.INSTANCE.update(epl);
         EplRespositoryInMem.INSTANCE.dump(0);
         return Response.ok().entity(epl).build();

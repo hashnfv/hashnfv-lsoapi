@@ -153,6 +153,44 @@ public class EvcClientTest {
         assertNotNull(evcList);
         assertEquals(evcList.size(),0);
         Evc.dumpList(evcList);
+
+/*
+        // Test update
+        // Add silver service to CoS layer
+        CoS silver = new CoS();
+        silver.setAllProps("silver", 100, 0.99, 17.43, 2.43, 0.01);
+        Dbg.p("silver svc being created in CoS");
+
+        silver = coSClient.create(silver);
+        assertNotNull(silver);
+
+        Evc evc_4   = new Evc();
+
+        evc_4.setAllNonPerfProps("id-unset-1",
+                Evc.EvcType.POINT_TO_POINT, 2, uniIdList1, uniMacList1, ipList1,
+                Evc.FrameDelivery.UNCONDITIONAL,
+                Evc.FrameDelivery.UNCONDITIONAL,
+                Evc.FrameDelivery.UNCONDITIONAL,
+                true, true, 1600, gold.getId());
+
+        EvcClient evcClient2 = new EvcClient();
+        Dbg.p(evc_4.getId()+" being created via evcmgr");
+        evc_4.dump(1);
+
+        evc_4 = evcClient2.create(evc_4);
+        assertNotNull(evc_4);
+
+        evc_4.setCosId("silver");
+
+        evc_4 = evcClient2.update(evc_4);
+        assertNotNull(evc_4);
+
+        retrievedEvc = evcClient2.get(evc_4.getId());
+        assertNotNull(retrievedEvc);
+        Dbg.p("evc just retrieved from Evc Service");
+        retrievedEvc.dump(1);
+        retrievedEvc = null;
+*/
     }
 
     @Test
