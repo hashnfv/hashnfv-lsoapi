@@ -3,25 +3,23 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. image:: ../etc/opnfv-logo.png
+.. image:: opnfv-logo.png
   :height: 40
   :width: 200
   :alt: OPNFV
   :align: left
 
-Example Documentation table of contents
-=======================================
+Connectivity Services LSO
+=========================
 
 Contents:
 
 .. toctree::
-   :numbered:
    :maxdepth: 4
+   :titlesonly:
 
-   documentation-example.rst
-
-Indices and tables
-==================
+   dev-notes.rst
+   state-of-code.rst
 
 * :ref:`search`
 
