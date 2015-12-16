@@ -31,11 +31,11 @@ var MefController = function($scope, $log, mefServices, model, dbg ) {
 
      $scope.uniToSpeedString = function(uni) {
         if (uni) {
-            speed = uni.uni[0].speed;
-            return Object.getOwnPropertyNames(speed)[0];s            
+            speed = uni.node[0]["cl-unimgr-mef:speed"];
+            return Object.getOwnPropertyNames(speed)[0];     
         }
         else
-            return "";
+            return "error: no uni supplied";
     }
     //
     // HTTP Response Handlers

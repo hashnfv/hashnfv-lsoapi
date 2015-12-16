@@ -126,22 +126,45 @@ public class Uni
 
     public String toJson() {
 
-        String json =   "{\n"+
-                "   \"uni\":\n"+
-                "   {\n"+
-                "      \"uni:id\": \""+ this.getId() +"\",\n"+
-                "      \"speed\":\n" +
-                "      {\n" +
-                "            \""  + this.getSpeed() +  "\": "+"\"1\"\n"+
-                "      },\n"+
-                "      \"uni:mac-layer\": \""+ this.getMacLayer() +"\",\n"+
-                "      \"uni:physical-medium\": \""+ this.getPhysicalMedium() +"\",\n"+
-                "      \"uni:mtu-size\": \""+ this.getMtuSize() +"\",\n"+
-                "      \"uni:type\": \"\",\n"+
-                "      \"uni:mac-address\": \""+ this.getMacAddress() +"\",\n"+
-                "      \"uni:ip-address\": \""+ this.getIpAddress() +"\",\n"+
-                "      \"uni:mode\": \""+ this.getMode() +"\"\n"+
-                "   }\n"+
+        /*
+        {
+            "network-topology:node": [
+            {
+                "node-id": "uni1",
+                    "speed": {
+                "speed-1G": 1
+            },
+                "uni:mac-layer": "IEEE 802.3-2005",
+                    "uni:physical-medium": "UNI TypeFull Duplex 2 Physical Interface",
+                    "uni:mtu-size": 0,
+                    "uni:type": "",
+                    "uni:mac-address": "b8:27:eb:c9:a9:66",
+                    "uni:ip-address": "10.36.0.21",
+                    "uni:mode": "Full Duplex"
+            }
+            ]
+        }
+        */
+
+        String json =
+                "{\n"+
+                "   \"network-topology:node\":\n" +
+                "   [" +
+                "      {\n"+
+                "         \"node-id\": \""+ this.getId() +"\",\n"+
+                "         \"speed\":\n" +
+                "         {\n" +
+                "               \""  + this.getSpeed() +  "\": "+"\"1\"\n"+
+                "         },\n"+
+                "         \"uni:mac-layer\": \""+ this.getMacLayer() +"\",\n"+
+                "         \"uni:physical-medium\": \""+ this.getPhysicalMedium() +"\",\n"+
+                "         \"uni:mtu-size\": \""+ this.getMtuSize() +"\",\n"+
+                "         \"uni:type\": \"\",\n"+
+                "         \"uni:mac-address\": \""+ this.getMacAddress() +"\",\n"+
+                "         \"uni:ip-address\": \""+ this.getIpAddress() +"\",\n"+
+                "         \"uni:mode\": \""+ this.getMode() +"\"\n"+
+                "      }\n"+
+                "   ]" +
                 "}";
 
         return json;

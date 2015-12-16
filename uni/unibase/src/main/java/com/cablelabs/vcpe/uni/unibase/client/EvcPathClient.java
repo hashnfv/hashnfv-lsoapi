@@ -29,9 +29,10 @@ import java.util.List;
 
 public class EvcPathClient {
 
+    // private String evcMgrServer   = "10.36.0.20";
     private String evcMgrServer   = "localhost";
     private String evcMgrPort     = "8181";
-    private String evcMgrCfgRESTPath    = "/restconf/config/cl-vcpe-mef:evcs/";
+    private String evcMgrCfgRESTPath = "/restconf/config/network-topology:network-topology/topology/unimgr:evc/link/";
 
     private Client client; // provided by Jersey
 
@@ -49,7 +50,7 @@ public class EvcPathClient {
         Dbg.p("\nEVC Create JSON:");
         Dbg.p(json);
 
-        Response response = target.path("evc")
+        Response response = target.path("")
                 .request(MediaType.APPLICATION_JSON)
                 .post(Entity.entity(json, MediaType.APPLICATION_JSON));
 
@@ -74,7 +75,7 @@ public class EvcPathClient {
         Dbg.p("\nEVC Create/Update JSON:");
         Dbg.p(json);
 
-        Response response = target.path("evc/"+evcPath.getId())
+        Response response = target.path(evcPath.getId())
                 .request(MediaType.APPLICATION_JSON)
                 .header("Authorization", authorizationHeaderValue)
                 .put(Entity.entity(json, MediaType.APPLICATION_JSON));
@@ -97,7 +98,7 @@ public class EvcPathClient {
         String authorizationHeaderValue = "Basic " +
                 DatatypeConverter.printBase64Binary(uNameAndPass.getBytes("UTF-8"));
 
-        Response response = target.path("evc/" + evcPathId)
+        Response response = target.path(evcPathId)
                 .request(MediaType.APPLICATION_JSON)
                 .header("Authorization", authorizationHeaderValue)
                 .delete();

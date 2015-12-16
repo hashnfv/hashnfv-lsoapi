@@ -26,7 +26,7 @@ input[type='number'] {
   background-color: none;
 }
 .selected-item-idle {
-  background-color: #e3e3e3;
+  background-color: #E3E3E3;
 }
 .selected-item-delete {
   background-color: #FFE4E1;
@@ -36,7 +36,7 @@ input[type='number'] {
 }
 .primary-container {
   border: 3px solid black;
-  background-color: #e3e3e3;
+  background-color: #E3E3E3;
   border-radius: 15px;
   padding: 10px;
   height: 400px;
@@ -169,7 +169,7 @@ input[type='number'] {
 }
 .frame .content .action-container .cos-container {
   border: 3px solid black;
-  background-color: #e3e3e3;
+  background-color: #E3E3E3;
   border-radius: 15px;
   padding: 10px;
   height: 400px;
@@ -206,7 +206,7 @@ input[type='number'] {
 }
 .frame .content .action-container .epl-container {
   border: 3px solid black;
-  background-color: #e3e3e3;
+  background-color: #E3E3E3;
   border-radius: 15px;
   padding: 10px;
   height: 400px;
@@ -243,7 +243,7 @@ input[type='number'] {
 }
 .frame .content .monitor-container .mef-container {
   border: 3px solid black;
-  background-color: #e3e3e3;
+  background-color: #E3E3E3;
   border-radius: 15px;
   padding: 10px;
   height: 400px;
@@ -266,7 +266,7 @@ input[type='number'] {
   font-size: small;
   font-weight: bold;
   text-align: center;
-  background-color: #e3e3e3;
+  background-color: #E3E3E3;
 }
 .frame .content .monitor-container .mef-container .mef-data-label {
   color: purple;

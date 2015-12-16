@@ -36,70 +36,71 @@ public class EvcPath {
 
     public String toJson() {
 
-//{
-//    "evc":
-//    {
-//        "evc:id": "822f8284-2b35-11e5-b345-feff819cdc9f",
-//        "evc:uni-dest":
-//        [
-//            {
-//                "order": 0,
-//                "uni": "822f7eec-2b35-11e5-b345-feff819cdc9f"
-//            }
-//        ],
-//        "evc:uni-source":
-//        [
-//            {
-//                "order": 0,
-//                "uni": "111f7eec-2c35-11e5-b345-feff819cdc9f"
-//            }
-//        ],
-//        "evc:cos-id": "string",
-//        "evc:ingress-bw":
-//        {
-//            "speed-1G": {}
-//        },
-//        "evc:egress-bw":
-//        {
-//            "speed-1G": {}
-//        }
-//    }
-//}
+        // {
+        //   "network-topology:link":
+        //   [
+        //     {
+        //       "evc:link-id": "evc1",
+        //       "evc:uni-dest": [
+        //         {
+        //           "order": 0,
+        //           "ip-address": "10.36.0.21"
+        //         }
+        //       ],
 
-        String json =   "{\n"+
-                "   \"evc\":\n"+
-                "   {\n"+
-                "      \"evc:id\": \""+ this.getId() +"\",\n"+
-                "      \"evc:uni-dest\":\n"+
-                "      [\n"+
-                "          {\n"+
-                "              \"order\": 0,\n"+
-                "              \"uni\": \""+ this.uni1.getId() +"\"\n"+
-                "          }\n"+
-                "      ],\n"+
-                "      \"evc:uni-source\":\n"+
-                "      [\n"+
-                "          {\n"+
-                "              \"order\": 0,\n"+
-                "              \"uni\": \""+ this.uni2.getId() +"\"\n"+
-                "          }\n"+
-                "      ],\n"+
-                "      \"evc:cos-id\": \""+ this.getCos() +"\",\n"+
-                "      \"evc:ingress-bw\":\n"+
+        //       "evc:uni-source": [
+        //         {
+        //           "order": 0,
+        //           "ip-address": "10.36.0.22"
+        //         }
+        //       ],
+
+        //       "evc:cos-id": "string",
+        //       "evc:ingress-bw": {
+        //         "speed-1G": {}
+        //       },
+        //       "evc:egress-bw": {
+        //         "speed-1G": {}
+        //       }
+        //     }
+        //   ]
+        // }
+
+        String json =
+
+                "{\n"+
+                "   \"network-topology:link\":\n" +
+                "   [" +
                 "      {\n"+
-//              "          \"speed-1G\": {}\n"+
-                "          \"" + this.getIngressBW() + "\": {}\n"+
-                "      },\n"+
-                "      \"evc:egress-bw\":\n"+
-                "      {\n"+
-//              "          \"speed-1G\": {}\n"+
-                "          \"" + this.getEgressBW() + "\": {}\n"+
+                "         \"evc:link-id\": \""+ this.getId() +"\",\n"+
+                "         \"evc:uni-dest\":\n"+
+                "         [\n"+
+                "             {\n"+
+                "                 \"order\": 0,\n"+
+                "                 \"ip-address\": \""+ this.uni1.getIpAddress() +"\"\n"+
+                "             }\n"+
+                "         ],\n"+
+                "         \"evc:uni-source\":\n"+
+                "         [\n"+
+                "             {\n"+
+                "                 \"order\": 0,\n"+
+                "                 \"ip-address\": \""+ this.uni2.getIpAddress() +"\"\n"+
+                "             }\n"+
+                "         ],\n"+
+                "         \"evc:cos-id\": \""+ this.getCos() +"\",\n"+
+                "         \"evc:ingress-bw\":\n"+
+                "         {\n"+
+                "             \"" + this.getIngressBW() + "\": {}\n"+
+                "         },\n"+
+                "         \"evc:egress-bw\":\n"+
+                "         {\n"+
+                "             \"" + this.getEgressBW() + "\": {}\n"+
+                "         }\n"+
                 "      }\n"+
-                "   }\n"+
+                "   ]" +
                 "}";
     return json;
     }
-
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }

@@ -14,10 +14,10 @@
        var _evcBasePath = "/evcmgr/webapi/evc"
        var _evcUrl      = "unset";
 
-       var _uniBasePath = "/restconf/operational/cl-vcpe-mef:unis/uni"
+       var _uniBasePath = "/restconf/config/network-topology:network-topology/topology/unimgr:uni/node"
        var _uniUrl      = "unset";
 
-       var _evcPathBasePath = "/restconf/operational/cl-vcpe-mef:evcs"
+       var _evcPathBasePath = "/restconf/config/network-topology:network-topology/topology/unimgr:evc/link"
        var _evcPathUrl      = "unset";
 
        //

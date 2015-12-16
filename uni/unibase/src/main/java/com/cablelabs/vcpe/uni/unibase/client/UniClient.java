@@ -31,10 +31,15 @@ import javax.xml.bind.DatatypeConverter;
 
 public class UniClient {
 
+    // put this in config file
+    // private String uniMgrServer   = "localhost";
+
+    //private String uniMgrServer   = "10.36.0.20";
     private String uniMgrServer   = "localhost";
     private String uniMgrPort     = "8181";
-    private String uniMgrCfgRESTPath = "/restconf/config/cl-vcpe-mef:unis/";
-    private String uniMgrOpRESTPath = "/restconf/operational/cl-vcpe-mef:unis/";
+
+    private String uniMgrCfgRESTPath = "/restconf/config/network-topology:network-topology/topology/unimgr:uni/node/";
+    private String uniMgrOpRESTPath = "/restconf/operational/network-topology:network-topology/topology/unimgr:uni/node/";
 
     private Client client; // provided by Jersey
 
@@ -43,37 +48,9 @@ public class UniClient {
     }
 
   //--------------------------------------------------------
-    public Response create(Uni uni ) throws Exception
-  //--------------------------------------------------------
-  // create Uni
-    {
-        WebTarget target =client.target("http://"+uniMgrServer+":" + uniMgrPort + uniMgrCfgRESTPath);
-
-        String json = uni.toJson();
-        Dbg.p("\nUNI Create JSON:");
-        Dbg.p(json);
-
-        String uNameAndPass = "admin:admin";
-        String authorizationHeaderValue = "Basic " +
-                                           DatatypeConverter.printBase64Binary(uNameAndPass.getBytes("UTF-8"));
-        Response response = target.path("uni")
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", authorizationHeaderValue)
-                .post(Entity.entity(json, MediaType.APPLICATION_JSON));
-
-        if (response.getStatus() != 200 ) // figure out how to use Status.OK
-        {
-            // in production you can be more specific based on reponse code, id, etc
-            throw new RuntimeException(response.getStatus() + ": there was an error on the server.");
-        }
-        //return response.readEntity(Uni.class);
-        return response;
-    }
-
-  //--------------------------------------------------------
     public Response update(Uni uni) throws Exception
   //--------------------------------------------------------
-  // create/update Uni.  This seems to be how OLD expects uni creation
+  // create/update Uni.  This seems to be how ODL expects uni creation
     {
         WebTarget target =client.target("http://"+uniMgrServer+":" + uniMgrPort + uniMgrCfgRESTPath);
 
@@ -84,7 +61,7 @@ public class UniClient {
         String uNameAndPass = "admin:admin";
         String authorizationHeaderValue = "Basic " +
                                            DatatypeConverter.printBase64Binary(uNameAndPass.getBytes("UTF-8"));
-        Response response = target.path("uni/"+uni.getId())
+        Response response = target.path(uni.getId())
                 .request(MediaType.APPLICATION_JSON)
                 .header("Authorization", authorizationHeaderValue)
                 .put(Entity.entity(json, MediaType.APPLICATION_JSON));
@@ -108,7 +85,7 @@ public class UniClient {
         String authorizationHeaderValue = "Basic " +
                 DatatypeConverter.printBase64Binary(uNameAndPass.getBytes("UTF-8"));
 
-        Response response = target.path("uni/" + uniId)
+        Response response = target.path(uniId)
                 .request(MediaType.APPLICATION_JSON)
                 .header("Authorization", authorizationHeaderValue)
                 .delete();
@@ -119,10 +96,6 @@ public class UniClient {
             throw new RuntimeException(response.getStatus() + ": there was an error on the server.");
         }
     }
-
-   //
-   // Code from here below requires work in order to work with ODL
-   //
 
   //--------------------------------------------------------
     public Uni get(String uniId) throws Exception
@@ -142,7 +115,6 @@ public class UniClient {
         String uniJson = response.readEntity(String.class);
         return JsonToUni(uni, uniJson);
     }
-
 
   //--------------------------------------------------------
     public Uni JsonToUni(Uni uni, String uniJson) {
@@ -239,6 +211,39 @@ public class UniClient {
         return uni;
     }
 
+    //
+    // Code from here below requires work in order to work with ODL
+    // Currently none of the calls below are being invoked
+    // Consider removing these from the source
+    //
+
+  //--------------------------------------------------------
+    public Response create(Uni uni ) throws Exception
+  //--------------------------------------------------------
+    // create Uni
+    {
+        WebTarget target =client.target("http://"+uniMgrServer+":" + uniMgrPort + uniMgrCfgRESTPath);
+
+        String json = uni.toJson();
+        Dbg.p("\nUNI Create JSON:");
+        Dbg.p(json);
+
+        String uNameAndPass = "admin:admin";
+        String authorizationHeaderValue = "Basic " +
+                DatatypeConverter.printBase64Binary(uNameAndPass.getBytes("UTF-8"));
+        Response response = target.path("uni")
+                .request(MediaType.APPLICATION_JSON)
+                .header("Authorization", authorizationHeaderValue)
+                .post(Entity.entity(json, MediaType.APPLICATION_JSON));
+
+        if (response.getStatus() != 200 ) // figure out how to use Status.OK
+        {
+            // in production you can be more specific based on reponse code, id, etc
+            throw new RuntimeException(response.getStatus() + ": there was an error on the server.");
+        }
+        //return response.readEntity(Uni.class);
+        return response;
+    }
 
   //--------------------------------------------------------
     public List<Uni> getAll()
